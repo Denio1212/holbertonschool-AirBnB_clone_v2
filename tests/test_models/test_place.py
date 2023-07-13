@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" """
+""" Unitests """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
 
 
 class test_Place(test_basemodel):
-    """ """
+    """ tests for place """
 
     def __init__(self, *args, **kwargs):
         """ """

@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" """
+""" Unitests """
 from tests.test_models.test_base_model import test_basemodel
 from models.review import Review
 
 
 class test_review(test_basemodel):
-    """ """
+    """ tests for review """
 
     def __init__(self, *args, **kwargs):
         """ """
