@@ -115,16 +115,66 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+
+        def do_create(self, line):
+            """Creates a new instance of a valid class with given attribute values
+            Exceptions:
+                SyntaxError: when there is no args given
+                NameError: when there is no object taht has the name
+            """
+            try:
+                if not line:
+                    raise SyntaxError()
+                my_list = line.split(" ")
+                obj = eval("{}()".format(my_list[0]))
+                for i in range(1, len(my_list)):
+                    plist = my_list[i].split('=')
+                    attr = plist[0]
+                    val = plist[1]
+                    if val[0][:1] == "\"" and val[0][-1:] == "\"":
+                        val = plist[1][1:-1].replace('_', ' ').replace('\"', '\\"')
+                    elif plist[1].isdigit():
+                        val = int(plist[1])
+                    else:
+                        val = float(plist[1])
+                    obj.__setattr__(attr, val)
+                obj.save()
+                print("{}".format(obj.id))
+            except SyntaxError:
+                print("** class name missing **")
+            except NameError:
+                print("** class doesn't exist **")
+
+        def do_show(self, line):
+            """Prints the string representation of an instance
+            Exceptions:
+                SyntaxError: when there is no args given
+                NameError: when there is no object taht has the name
+                IndexError: when there is no id given
+                KeyError: when there is no valid id given
+            """
+            try:
+                if not line:
+                    raise SyntaxError()
+                my_list = line.split(" ")
+                if my_list[0] not in self.all_classes:
+                    raise NameError()
+                if len(my_list) < 2:
+                    raise IndexError()
+                objects = storage.all()
+                key = my_list[0] + '.' + my_list[1]
+                if key in objects:
+                    print(objects[key])
+                else:
+                    raise KeyError()
+            except SyntaxError:
+                print("** class name missing **")
+            except NameError:
+                print("** class doesn't exist **")
+            except IndexError:
+                print("** instance id missing **")
+            except KeyError:
+                print("** no instance found **")
 
     def help_create(self):
         """ Help information for the create method """
