@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
             pline = line[:]  # parsed line
 
             # isolate <class name>
-            _cls = pline[:pline.find('.')]
+            _cls = pline [:pline.find('.')]
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
